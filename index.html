@@ -1,9 +1,151 @@
-<!DOCTYPE html>
-<html>
-    <head>
-        <title>Test</title>
-    </head>
-    <body>
-        <p>Hello World</p>
-    </body>
+<!--
+  Arcade Timelines
+  To change the numbers, versions, links, or themes: edit data/manifest.json.
+  To change the Hall of Fame lists: edit data/hall_of_fame.json.
+-->
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Arcade Timelines</title>
+
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Press+Start+2P&display=swap" rel="stylesheet" />
+
+  <link rel="stylesheet" href="styles.css" />
+</head>
+
+<body>
+  <div class="arcade-frame">
+    <!-- The numbers in the top corners. Labels and values are both
+         filled in by script.js from data/manifest.json (see showStats). -->
+    <div class="hud">
+      <div class="hud-stat hud-stat--left">
+        <span class="hud-stat__label" id="stat-left-label"></span>
+        <span class="hud-stat__value" id="stat-left-value"></span>
+      </div>
+      <div class="hud-stat hud-stat--right">
+        <span class="hud-stat__label" id="stat-right-label"></span>
+        <span class="hud-stat__value" id="stat-right-value"></span>
+      </div>
+    </div>
+
+    <header class="site-header">
+      <h1 class="neon-logo">
+        <span class="neon-logo__arcade">ARCADE</span>
+        <span class="neon-logo__timelines">TIMELINES</span>
+      </h1>
+    </header>
+
+    <!-- Credits loop: items show one at a time, top to bottom, then repeat.
+         data-hold = how long each item stays on screen (milliseconds). -->
+    <div class="credits">
+      <div class="credits__rotator">
+        <span class="credit credit--insert" data-hold="3400">INSERT COIN</span>
+        <span class="credit credit--version" id="credit-version" data-hold="3400">Updated to MAME &mdash;</span>
+        <a class="credit credit-logo" data-hold="2600" href="https://www.mamedev.org" target="_blank" rel="noopener">
+          <img src="images/mame_logo.png" alt="MAME" />
+        </a>
+        <a class="credit credit-logo" data-hold="2600" href="https://adb.arcadeitalia.net" target="_blank" rel="noopener">
+          <img src="images/arcade_database_logo.png" alt="Arcade Database" />
+        </a>
+        <a class="credit credit-logo" data-hold="2600" href="https://www.arcade-history.com" target="_blank" rel="noopener">
+          <img src="images/gaming_history_logo.png" alt="Gaming History" />
+        </a>
+        <a class="credit credit-logo" data-hold="2600" href="https://timelines.studio" target="_blank" rel="noopener">
+          <img src="images/timelines_logo.png" alt="Timelines" />
+        </a>
+      </div>
+    </div>
+
+    <nav class="tabs" aria-label="Sections">
+      <button class="tab tab--decade" data-tab="70s">70s</button>
+      <button class="tab tab--decade" data-tab="80s">80s</button>
+      <button class="tab tab--decade" data-tab="90s">90s</button>
+      <button class="tab tab--decade" data-tab="2000s">2000s</button>
+      <button class="tab tab--systems" data-tab="Arcade Systems">Arcade Systems</button>
+      <button class="tab tab--hof" id="hof-toggle">Hall of Fame</button>
+    </nav>
+
+    <!-- The canvas area: the timeline viewer, or the Hall of Fame. -->
+    <main class="timeline-wrap" id="timeline-wrap">
+      <iframe id="timeline-frame" class="timeline-frame" title="Selected arcade timeline" src=""></iframe>
+      <div class="timeline-placeholder" id="timeline-placeholder" hidden>
+        <span class="timeline-placeholder__title">NO TIMELINE</span>
+        <span class="timeline-placeholder__text">This link does not end in <code>.timeline</code>.</span>
+      </div>
+      <button class="maximize-btn" id="maximize-btn" title="Open timeline in fullscreen" aria-label="Open timeline in fullscreen">
+        <!-- Lucide "maximize" icon (inlined; uses currentColor). Shown when not fullscreen. -->
+        <svg id="icon-maximize" xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+          <path d="M8 3H5a2 2 0 0 0-2 2v3" />
+          <path d="M21 8V5a2 2 0 0 0-2-2h-3" />
+          <path d="M3 16v3a2 2 0 0 0 2 2h3" />
+          <path d="M16 21h3a2 2 0 0 0 2-2v-3" />
+        </svg>
+        <!-- Lucide "minimize" icon (inlined; uses currentColor). Shown while fullscreen. -->
+        <svg id="icon-minimize" xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" hidden>
+          <path d="M8 3v3a2 2 0 0 1-2 2H3" />
+          <path d="M21 8h-3a2 2 0 0 1-2-2V3" />
+          <path d="M3 16h3a2 2 0 0 1 2 2v3" />
+          <path d="M16 21v-3a2 2 0 0 1 2-2h3" />
+        </svg>
+      </button>
+    </main>
+
+    <main class="hof-wrap" id="hof-wrap" hidden>
+      <nav class="tabs tabs--hof" aria-label="Hall of Fame lists">
+        <button class="tab tab--decade" data-hof="70s">70s</button>
+        <button class="tab tab--decade" data-hof="80s">80s</button>
+        <button class="tab tab--decade" data-hof="90s">90s</button>
+        <button class="tab tab--decade" data-hof="2000s">2000s</button>
+        <button class="tab tab--systems" data-hof="manufacturers">Manufacturers</button>
+      </nav>
+      <div class="hof-head">
+        <span></span>
+        <span id="col-a">Game</span>
+        <span id="col-b">Manufacturer</span>
+        <span class="hof-year" id="col-c">Year</span>
+      </div>
+      <ol class="hof-list" id="hof-list"></ol>
+    </main>
+
+    <footer class="bottom-bar">
+      <!-- Hidden for now. -->
+      <div class="visitors" hidden>
+        <span class="visitors__label">Visitors</span>
+        <span class="digit">0</span>
+        <span class="digit">2</span>
+        <span class="digit">4</span>
+        <span class="digit">6</span>
+        <span class="digit">0</span>
+        <span class="digit">1</span>
+        <span class="ghost" aria-hidden="true"></span>
+      </div>
+
+      <div class="theme-picker">
+        <button class="theme-readout" id="theme-toggle" type="button">
+          Theme:<span class="theme-readout__value" id="theme-value">-</span>
+        </button>
+        <div class="theme-menu" id="theme-menu" hidden></div>
+      </div>
+    </footer>
+  </div>
+
+  <!-- Footer, shown under every view, outside the neon
+       frame border. The warning line's color is switched between red and
+       black by script.js, depending on whether red is legible against
+       the current theme's background. -->
+  <footer class="site-footer">
+    <p class="site-footer__warning">No copyrighted game ROMs or game materials are hosted on this website!!!</p>
+    <p class="site-footer__credit">Game lists &copy; <a href="https://www.mamedev.org/" target="_blank" rel="noopener">MAME</a> - GPL-2.0 License</p>
+    <p class="site-footer__credit">Game descriptions &copy; <a href="https://www.arcade-history.com/index.php?page=download" target="_blank" rel="noopener">Gaming History</a>, Alexis Bousiges, Cannes, France</p>
+    <p class="site-footer__credit">Game images &copy; <a href="https://adb.arcadeitalia.net/" target="_blank" rel="noopener">Arcade Database</a>, Michele Fochi, Italy</p>
+    <p class="site-footer__credit">Software &copy; <a href="https://www.timelines.studio/" target="_blank" rel="noopener">Timelines</a>, Sree Gajula, California, USA - GPL-3.0 License</p>
+    <p class="site-footer__spacer" aria-hidden="true"></p>
+    <p class="site-footer__copyright">&copy; 2026 Arcade Timelines</p>
+  </footer>
+
+  <script src="script.js"></script>
+</body>
 </html>

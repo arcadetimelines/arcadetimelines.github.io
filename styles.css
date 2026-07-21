@@ -1,0 +1,619 @@
+/* =================================================================
+   Arcade Timelines — styles.css (shared by both pages)
+   ================================================================= */
+
+/* ---- COLORS + FONT ----------------------------------------------
+   These are the starting colors (Retro Arcade). theme.js replaces
+   them when a theme loads, so every color below can change. */
+:root {
+  --app-bg: #000000;
+  --border-color: #243cff;
+  --link-color: #ff4aa8;
+  --ui-muted: #1ea0ff;
+  --text-primary: #ffe36b;
+  --surface: #020214;
+  --font: "Press Start 2P", "Courier New", monospace;
+  /* script.js recomputes this against the current --app-bg every time
+     a theme loads, so it's always legible. */
+  --footer-warning-color: #ff3b3b;
+}
+
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+/* Anything with the hidden attribute is really hidden, even when a
+   rule below gives it a display value. */
+[hidden] {
+  display: none !important;
+}
+
+html,
+body {
+  min-height: 100%;
+}
+
+body {
+  background: var(--app-bg);
+  color: var(--text-primary);
+  font-family: var(--font);
+  padding: 20px;
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+
+/* ---- THE NEON FRAME (the double lines around the page) ---------- */
+.arcade-frame {
+  flex: 1;
+  /* Always a full viewport tall (minus the body's own padding), even
+     though the footer below it pushes total page height past 100vh
+     and requires a scroll — the frame itself never gets compressed. */
+  min-height: calc(100vh - 40px);
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+  position: relative;
+  border: 4px solid var(--border-color);
+  border-radius: 22px;
+  padding: 26px 32px 32px;
+  box-shadow:
+    inset 0 0 0 4px var(--app-bg),
+    inset 0 0 0 8px var(--border-color);
+}
+
+/* ---- CORNER NUMBERS ---------------------------------------------- */
+.hud {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+}
+
+.hud-stat {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  font-size: 10px;
+  line-height: 1.6;
+  text-transform: uppercase;
+}
+
+.hud-stat--right {
+  text-align: right;
+}
+
+.hud-stat__value {
+  color: var(--link-color);
+}
+
+/* ---- NEON LOGO ---------------------------------------------------- */
+.site-header {
+  text-align: center;
+}
+
+.neon-logo {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 4px;
+  line-height: 1;
+}
+
+.neon-logo__arcade {
+  font-size: 34px;
+  color: var(--text-primary);
+  text-shadow: 0 0 14px color-mix(in srgb, var(--text-primary) 55%, transparent);
+}
+
+.neon-logo__timelines {
+  font-size: 34px;
+  color: var(--ui-muted);
+  text-shadow: 0 0 14px color-mix(in srgb, var(--ui-muted) 60%, transparent);
+}
+
+/* ---- CREDITS LOOP -------------------------------------------------
+   All the .credit items sit in the same spot. script.js shows one at
+   a time by adding and removing the .is-showing class. */
+.credits {
+  display: flex;
+  justify-content: center;
+}
+
+.credits__rotator {
+  position: relative;
+  width: 520px;
+  max-width: 60vw;
+  height: 48px;
+}
+
+.credit {
+  position: absolute;
+  inset: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 12px;
+  text-decoration: none;
+  white-space: nowrap;
+  opacity: 0;
+  visibility: hidden;
+  transition: opacity 0.35s ease, visibility 0.35s;
+}
+
+.credit.is-showing {
+  opacity: 1;
+  visibility: visible;
+}
+
+.credit--insert {
+  font-size: 15px;
+  letter-spacing: 3px;
+  color: var(--link-color);
+  text-shadow: 0 0 12px color-mix(in srgb, var(--link-color) 60%, transparent);
+}
+
+.credit--insert.is-showing {
+  animation: insert-coin-flash 0.8s step-end infinite;
+}
+
+.credit--version {
+  font-size: 10px;
+  letter-spacing: 1px;
+}
+
+.credit-logo img {
+  max-height: 100%;
+  /* Wide banner logos stop at 280px so they all look a similar size. */
+  max-width: min(280px, 100%);
+  display: block;
+}
+
+.credit-logo:hover img {
+  filter: brightness(1.15);
+}
+
+/* ---- TAB BUTTONS --------------------------------------------------- */
+.tabs {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 14px;
+  justify-content: center;
+}
+
+.tab {
+  cursor: pointer;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  font-family: inherit;
+  font-size: 11px;
+  line-height: 1;
+  text-align: center;
+  text-decoration: none;
+  background: transparent;
+  border: 3px solid;
+  border-radius: 8px;
+  min-block-size: 32px;
+  padding: 5px 12px;
+  transition: background-color 0.15s ease, color 0.15s ease;
+}
+
+.tab--decade {
+  inline-size: 78px;
+  border-color: var(--ui-muted);
+  color: var(--ui-muted);
+}
+
+/* The two wide buttons share a size; only their colors differ.
+   Their labels ("Arcade Systems" / "Hall of Fame") must stay on one
+   line, so the button is sized to the text instead of letting it wrap. */
+.tab--systems,
+.tab--hof {
+  inline-size: auto;
+  min-inline-size: 152px;
+  padding-inline: 14px;
+  font-size: 9px;
+  line-height: 1.05;
+  text-transform: uppercase;
+  white-space: nowrap;
+}
+
+.tab--systems {
+  border-color: var(--link-color);
+  color: var(--link-color);
+}
+
+.tab--hof {
+  border-color: var(--text-primary);
+  color: var(--text-primary);
+}
+
+.tab:hover {
+  background: color-mix(in srgb, var(--ui-muted) 14%, transparent);
+}
+
+.tab--decade.is-active,
+.tab--hof.is-active {
+  background: var(--text-primary);
+  border-color: var(--text-primary);
+  color: var(--app-bg);
+  box-shadow: 0 0 16px color-mix(in srgb, var(--text-primary) 60%, transparent);
+}
+
+.tab--systems.is-active {
+  background: var(--link-color);
+  border-color: var(--link-color);
+  color: var(--app-bg);
+  box-shadow: 0 0 16px color-mix(in srgb, var(--link-color) 60%, transparent);
+}
+
+/* ---- TIMELINE VIEWER (main page) ----------------------------------- */
+.timeline-wrap {
+  flex: 1;
+  min-height: 0;
+  position: relative;
+  border: 4px solid var(--border-color);
+  border-radius: 14px;
+  background: color-mix(in srgb, var(--app-bg) 86%, var(--border-color));
+  overflow: hidden;
+}
+
+.timeline-frame {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  border: 0;
+  background: color-mix(in srgb, var(--app-bg) 86%, var(--border-color));
+}
+
+.timeline-placeholder {
+  position: absolute;
+  inset: 0;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 14px;
+  padding: 24px;
+  text-align: center;
+  background: color-mix(in srgb, var(--app-bg) 86%, var(--border-color));
+  color: color-mix(in srgb, var(--ui-muted) 55%, var(--text-primary));
+}
+
+.timeline-placeholder__title {
+  font-size: 14px;
+  color: var(--text-primary);
+  letter-spacing: 1px;
+}
+
+.timeline-placeholder__text {
+  max-width: 30ch;
+  font-size: 10px;
+  line-height: 1.7;
+}
+
+.timeline-placeholder code {
+  color: var(--link-color);
+}
+
+/* ---- MAXIMIZE BUTTON ------------------------------------------------ */
+.maximize-btn {
+  position: absolute;
+  bottom: 14px;
+  right: 20px;
+  z-index: 3;
+  cursor: pointer;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  font-family: inherit;
+  font-size: 12px;
+  line-height: 1;
+  text-decoration: none;
+  color: color-mix(in srgb, var(--ui-muted) 55%, var(--text-primary));
+  background: var(--surface);
+  border: 1px solid var(--accent-color);
+  border-radius: 9px;
+  inline-size: 38px;
+  block-size: 34px;
+  padding: 0;
+  transition: background-color 0.15s ease, color 0.15s ease;
+}
+
+.maximize-btn svg {
+  width: 18px;
+  height: 18px;
+}
+
+.maximize-btn:hover {
+  color: var(--app-bg);
+  background: color-mix(in srgb, var(--ui-muted) 55%, var(--text-primary));
+}
+
+/* ---- HALL OF FAME LIST ---------------------------------------------- */
+.hof-wrap {
+  flex: 1;
+  min-height: 0;
+  border: 4px solid var(--border-color);
+  border-radius: 14px;
+  background: color-mix(in srgb, var(--app-bg) 86%, var(--border-color));
+  overflow: auto;
+  padding: 30px 36px;
+}
+
+/* Every row is a grid: rank / game / manufacturer / year. */
+.hof-head,
+.hof-row {
+  display: grid;
+  grid-template-columns: 3.5ch minmax(0, 1.6fr) minmax(0, 1fr) 6ch;
+  column-gap: 26px;
+  align-items: baseline;
+}
+
+/* The Hall of Fame's own button row, above its list. */
+.tabs--hof {
+  margin-bottom: 26px;
+}
+
+.hof-head {
+  max-width: 780px;
+  margin: 0 auto 22px;
+  font-size: 8px;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+  color: var(--ui-muted);
+}
+
+.hof-list {
+  list-style: none;
+  display: flex;
+  flex-direction: column;
+  gap: 18px;
+  max-width: 780px;
+  margin: 0 auto;
+}
+
+.hof-row {
+  font-size: 11px;
+  line-height: 1.5;
+  /* Rows start invisible; script.js adds .is-revealed one row at a
+     time, so they pop in like an arcade high-score table. */
+  opacity: 0;
+  transform: translateX(-12px);
+  transition: opacity 0.25s ease, transform 0.25s ease;
+}
+
+.hof-row.is-revealed {
+  opacity: 1;
+  transform: none;
+}
+
+.hof-rank {
+  color: var(--link-color);
+}
+
+.hof-game {
+  color: var(--text-primary);
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.hof-maker {
+  color: var(--ui-muted);
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.hof-year {
+  color: var(--link-color);
+  text-align: right;
+}
+
+/* ---- BOTTOM BAR ------------------------------------------------------ */
+.bottom-bar {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  flex-wrap: wrap;
+  gap: 12px;
+}
+
+.visitors {
+  display: inline-flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.visitors__label {
+  font-size: 9px;
+  text-transform: uppercase;
+}
+
+.digit {
+  font-size: 13px;
+  color: color-mix(in srgb, var(--ui-muted) 55%, var(--text-primary));
+  background: color-mix(in srgb, var(--app-bg) 92%, var(--border-color));
+  border: 1px solid var(--border-color);
+  padding: 5px 6px;
+}
+
+/* The little Pac-Man ghost. */
+.ghost {
+  flex-shrink: 0;
+  position: relative;
+  width: 22px;
+  height: 24px;
+  margin-left: 4px;
+  background: var(--link-color);
+  border-radius: 11px 11px 0 0;
+}
+
+.ghost::before,
+.ghost::after {
+  content: "";
+  position: absolute;
+  top: 7px;
+  width: 5px;
+  height: 5px;
+  background: #ffffff;
+  border-radius: 50%;
+}
+
+.ghost::before { left: 4px; }
+.ghost::after  { right: 4px; }
+
+/* ---- THEME READOUT + MENU -------------------------------------------- */
+.theme-readout {
+  background: transparent;
+  border: 0;
+  cursor: pointer;
+  font-family: inherit;
+  font-size: 10px;
+  letter-spacing: 1px;
+  color: var(--text-primary);
+  text-transform: uppercase;
+}
+
+.theme-readout__value {
+  color: var(--link-color);
+  margin-left: 8px;
+}
+
+.theme-picker {
+  position: relative;
+  /* Keeps it pinned to the right even if .visitors is hidden. */
+  margin-left: auto;
+}
+
+.theme-menu {
+  position: absolute;
+  right: 0;
+  bottom: calc(100% + 10px);
+  min-width: 220px;
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  padding: 10px;
+  border: 2px solid var(--border-color);
+  border-radius: 10px;
+  background: color-mix(in srgb, var(--app-bg) 92%, var(--border-color));
+  box-shadow:
+    inset 0 0 0 2px var(--surface),
+    0 0 16px color-mix(in srgb, var(--border-color) 35%, transparent);
+  z-index: 5;
+}
+
+.theme-option {
+  border: 2px solid var(--ui-muted);
+  border-radius: 8px;
+  background: transparent;
+  color: color-mix(in srgb, var(--ui-muted) 55%, var(--text-primary));
+  cursor: pointer;
+  font-family: inherit;
+  font-size: 9px;
+  line-height: 1.2;
+  padding: 8px 10px;
+  text-align: left;
+  text-transform: uppercase;
+}
+
+.theme-option:hover {
+  background: color-mix(in srgb, var(--ui-muted) 14%, transparent);
+}
+
+/* ---- SITE FOOTER (legal / credits) -------------------------------------
+   --footer-warning-color is set by script.js: red by default, black
+   whenever red wouldn't be legible against the current theme's --app-bg. */
+.site-footer {
+  display: flex;
+  flex-direction: column;
+  flex-shrink: 0;
+}
+
+.site-footer__warning {
+  color: var(--footer-warning-color);
+  font-size: 9px;
+  line-height: 1.7;
+  letter-spacing: 0.5px;
+  text-align: center;
+  margin-bottom: 14px;
+}
+
+.site-footer__credit {
+  font-size: 8px;
+  line-height: 1.9;
+  letter-spacing: 0.3px;
+  text-align: center;
+  color: color-mix(in srgb, var(--ui-muted) 45%, var(--text-primary));
+}
+
+.site-footer__credit a {
+  color: var(--link-color);
+}
+
+.site-footer__spacer {
+  height: 10px;
+}
+
+.site-footer__copyright {
+  font-size: 8px;
+  letter-spacing: 0.3px;
+  text-align: center;
+  color: color-mix(in srgb, var(--ui-muted) 45%, var(--text-primary));
+}
+
+/* ---- ANIMATIONS -------------------------------------------------------- */
+@keyframes insert-coin-flash {
+  0%   { opacity: 1; }
+  50%  { opacity: 0; }
+  100% { opacity: 1; }
+}
+
+/* ---- SMALL SCREENS ------------------------------------------------------ */
+@media (max-width: 640px) {
+  body {
+    padding: 10px;
+  }
+
+  .arcade-frame {
+    min-height: calc(100vh - 20px);
+    padding: 20px 16px 22px;
+  }
+
+  .neon-logo__arcade,
+  .neon-logo__timelines {
+    font-size: 22px;
+  }
+
+  .tab {
+    font-size: 9px;
+    min-block-size: 28px;
+    padding: 4px 8px;
+  }
+
+  .tab--decade {
+    inline-size: 68px;
+  }
+
+  .tab--systems,
+  .tab--hof {
+    inline-size: auto;
+    min-inline-size: 126px;
+    padding-inline: 10px;
+    font-size: 8px;
+  }
+
+  .theme-menu {
+    min-width: 180px;
+    right: -8px;
+  }
+
+  .credits__rotator {
+    max-width: 55vw;
+  }
+}

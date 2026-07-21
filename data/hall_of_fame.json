@@ -1,0 +1,66 @@
+{
+  "70s": {
+    "games": 227,
+    "manufacturers": 60,
+    "top10": [
+      { "game": "Asteroids (rev 4)",                       "manufacturer": "Atari",                            "year": 1979 },
+      { "game": "Destroyer (Atari, version O2)",           "manufacturer": "Atari",                            "year": 1979 },
+      { "game": "Fire Truck / Smokey Joe (PROM version)",  "manufacturer": "Atari",                            "year": 1978 },
+      { "game": "Monte Carlo",                             "manufacturer": "Atari",                            "year": 1979 },
+      { "game": "Space Wars",                              "manufacturer": "Cinematronics",                    "year": 1977 },
+      { "game": "Astro Fighter (set 1)",                   "manufacturer": "Data East",                        "year": 1979 },
+      { "game": "Sea Wolf (set 1)",                        "manufacturer": "Dave Nutting Associates / Midway", "year": 1976 },
+      { "game": "Death Race",                              "manufacturer": "Exidy",                            "year": 1976 },
+      { "game": "Blue Shark (Midway)",                     "manufacturer": "Midway",                           "year": 1978 },
+      { "game": "Galaxian (Namco set 1)",                  "manufacturer": "Namco",                            "year": 1979 }
+    ]
+  },
+  "80s": {
+    "games": 1772,
+    "manufacturers": 409,
+    "top10": [
+      { "game": "Golden Axe (set 6, US) (8751 317-123A)",              "manufacturer": "Sega",                                   "year": 1989 },
+      { "game": "Wonder Boy (set 1, 315-5177)",                        "manufacturer": "Escape (Sega license)",                  "year": 1986 },
+      { "game": "Galaga (Namco rev. B)",                               "manufacturer": "Namco",                                  "year": 1981 },
+      { "game": "Bubble Bobble (Japan, Ver 0.1)",                      "manufacturer": "Taito Corporation",                      "year": 1986 },
+      { "game": "Operation Wolf (World, rev 2, set 1)",                "manufacturer": "Taito Corporation Japan",                "year": 1987 },
+      { "game": "Teenage Mutant Ninja Turtles (World 4 Players, version X)", "manufacturer": "Konami",                          "year": 1989 },
+      { "game": "Out Run (sitdown/upright, Rev B)",                    "manufacturer": "Sega",                                   "year": 1986 },
+      { "game": "Ms. Pac-Man",                                         "manufacturer": "Midway / General Computer Corporation", "year": 1981 },
+      { "game": "Double Dragon (World set 1)",                         "manufacturer": "Technos Japan (Taito license)",         "year": 1987 },
+      { "game": "1942 (Revision B)",                                   "manufacturer": "Capcom",                                 "year": 1984 }
+    ]
+  },
+  "90s": {
+    "games": 2071,
+    "manufacturers": 486,
+    "top10": [
+      { "game": "Terminator 2 - Judgment Day (rev LA4 08/03/92)", "manufacturer": "Midway",      "year": 1991 },
+      { "game": "Revolution X (revision 2.0 9/8/94)",             "manufacturer": "Midway",      "year": 1994 },
+      { "game": "Pit Fighter (rev 9)",                            "manufacturer": "Atari Games", "year": 1990 },
+      { "game": "Cisco Heat",                                     "manufacturer": "Jaleco",      "year": 1990 },
+      { "game": "Cruis'n USA (v4.5)",                             "manufacturer": "Midway",      "year": 1994 },
+      { "game": "The Simpsons (4 Players World, set 1)",          "manufacturer": "Konami",      "year": 1991 },
+      { "game": "Daytona USA 2: Power Edition",                   "manufacturer": "Sega",        "year": 1998 },
+      { "game": "Mortal Kombat (rev 5.0 T-Unit 03/19/93)",        "manufacturer": "Midway",      "year": 1992 },
+      { "game": "Sunset Riders (4 Players ver EAC)",              "manufacturer": "Konami",      "year": 1991 },
+      { "game": "Sega Touring Car Championship",                  "manufacturer": "Sega",        "year": 1996 }
+    ]
+  },
+  "2000s": {
+    "games": 804,
+    "manufacturers": 235,
+    "top10": [
+      { "game": "OutRun 2 (Rev A) (GDX-0004A)",                          "manufacturer": "Sega",           "year": 2003 },
+      { "game": "San Francisco Rush 2049: Special Edition",              "manufacturer": "Atari Games",    "year": 2003 },
+      { "game": "Super Dragon Ball Z (DB1 Ver. B)",                      "manufacturer": "Banpresto / Spike", "year": 2005 },
+      { "game": "Capcom Vs. SNK: Millennium Fight 2000 Pro (Japan)",     "manufacturer": "Capcom / SNK",   "year": 2001 },
+      { "game": "Wave Runner GP",                                       "manufacturer": "CRI / Sega",     "year": 2001 },
+      { "game": "BnB Arcade (V1.0005 World)",                           "manufacturer": "Eolith",         "year": 2003 },
+      { "game": "Smashing Drive (World)",                               "manufacturer": "Gaelco",         "year": 2000 },
+      { "game": "Tokyo Cop (US, dedicated version)",                    "manufacturer": "Gaelco",         "year": 2003 },
+      { "game": "Mario Kart Arcade GP 2 (Japan, MK21 Ver.A)",           "manufacturer": "Namco / Nintendo", "year": 2007 },
+      { "game": "WWF Royal Rumble",                                     "manufacturer": "Sega",           "year": 2000 }
+    ]
+  }
+}
