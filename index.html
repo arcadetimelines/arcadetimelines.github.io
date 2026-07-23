@@ -1,3 +1,4 @@
+<!DOCTYPE html>
 <!--
   Arcade Timelines
   To change the numbers, versions, links, or themes: edit data/manifest.json.
@@ -14,6 +15,9 @@
   <link href="https://fonts.googleapis.com/css2?family=Press+Start+2P&display=swap" rel="stylesheet" />
 
   <link rel="stylesheet" href="styles.css" />
+  <!-- script.js redraws this ghost in each theme's ui-muted color
+       whenever a theme loads; images/ghost.svg is just the fallback. -->
+  <link rel="icon" type="image/svg+xml" sizes="any" href="images/ghost.svg" id="favicon" />
 </head>
 
 <body>
@@ -22,11 +26,17 @@
          filled in by script.js from data/manifest.json (see showStats). -->
     <div class="hud">
       <div class="hud-stat hud-stat--left">
-        <span class="hud-stat__label" id="stat-left-label"></span>
+        <span class="hud-stat__labelrow">
+          <span class="ghost ghost--mini" aria-hidden="true"></span>
+          <span class="hud-stat__label" id="stat-left-label"></span>
+        </span>
         <span class="hud-stat__value" id="stat-left-value"></span>
       </div>
       <div class="hud-stat hud-stat--right">
-        <span class="hud-stat__label" id="stat-right-label"></span>
+        <span class="hud-stat__labelrow">
+          <span class="ghost ghost--mini" aria-hidden="true"></span>
+          <span class="hud-stat__label" id="stat-right-label"></span>
+        </span>
         <span class="hud-stat__value" id="stat-right-value"></span>
       </div>
     </div>
@@ -66,6 +76,7 @@
       <button class="tab tab--decade" data-tab="2000s">2000s</button>
       <button class="tab tab--systems" data-tab="Arcade Systems">Arcade Systems</button>
       <button class="tab tab--hof" id="hof-toggle">Hall of Fame</button>
+      <button class="tab tab--help" id="help-toggle" title="Help" aria-label="Help">?</button>
     </nav>
 
     <!-- The canvas area: the timeline viewer, or the Hall of Fame. -->
@@ -110,7 +121,35 @@
       <ol class="hof-list" id="hof-list"></ol>
     </main>
 
+    <!-- Help panel. The intro shows right away; the steps reveal one at a
+         time (same animation as the Hall of Fame). -->
+    <div class="help-overlay" id="help-overlay" hidden>
+      <div class="help-panel">
+        <div class="help-intro">
+          <p>Welcome to Arcade Timelines, the exciting journey to your favorite arcade decade.</p>
+          <p>Relive your childhood, find those long-forgotten games and enter the golden age of arcade games again!</p>
+          <p>With one mouse click or touch screen tap you are always up-to-date with latest MAME and Gaming History information, including game images from Arcade Database.</p>
+        </div>
+        <ol class="help-steps">
+          <li class="help-step">1. Choose your favorite arcade decade (enter full screen mode with bottom right button!).</li>
+          <li class="help-step">2. Decide which manufacturer spans you want to see. One-year spans (same start and end year) are displayed as a dot on the timeline.</li>
+          <li class="help-step">3. Left panel -> Groups tabpage: make all groups, which contain the starting symbol of the manufacturer(s) in 2., visible. E.g. Atari => group 'a', Sega => group 's', ... .</li>
+          <li class="help-step">4. Left panel -> Tags tabpage: make the desired tags visible (or keep them all visible).</li>
+          <li class="help-step">5. Left panel -> Timeline tabpage: choose sorting and grouping options. Click any era (arcade era), span (arcade manufacturer) or event (arcade cabinet) to visualize it in the timeline or click it directly in the timeline itself.</li>
+          <li class="help-step">6. Right panel: after executing 5., see arcade cabinet information and images, including clickable links.</li>
+        </ol>
+      </div>
+    </div>
+
     <footer class="bottom-bar">
+      <!-- MAME version, typed out character by character by script.js.
+           The number comes from versionLine in data/manifest.json. -->
+      <div class="mame-version" id="mame-version" aria-hidden="true"></div>
+
+      <a class="flag-counter" id="flag-counter" hidden href="https://info.flagcounter.com/FtHc" target="_blank" rel="noopener">
+        <img src="https://s05.flagcounter.com/count2/FtHc/bg_FFFFFF/txt_000000/border_CCCCCC/columns_4/maxflags_16/viewers_0/labels_1/pageviews_1/flags_0/percent_0/" alt="Flag Counter" />
+      </a>
+
       <!-- Hidden for now. -->
       <div class="visitors" hidden>
         <span class="visitors__label">Visitors</span>

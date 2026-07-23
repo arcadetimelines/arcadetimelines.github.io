@@ -25,6 +25,13 @@ const hofList = document.getElementById("hof-list");
 const themeMenu = document.getElementById("theme-menu");
 const themeToggle = document.getElementById("theme-toggle");
 const credits = document.querySelectorAll(".credit");
+const hud = document.querySelector(".hud");
+const helpToggle = document.getElementById("help-toggle");
+const helpOverlay = document.getElementById("help-overlay");
+const helpSteps = document.querySelectorAll(".help-step");
+const flagCounter = document.getElementById("flag-counter");
+const neonLogo = document.querySelector(".neon-logo");
+const mameVersion = document.getElementById("mame-version");
 
 /* ---- STATE ------------------------------------------------------------ */
 let manifest, hallOfFame;
@@ -32,6 +39,7 @@ let view = "70s";       // which main tab is selected
 let hofView = "70s";    // which list is selected inside the Hall of Fame
 let hofMode = false;    // is the Hall of Fame open?
 let revealTimers = [];
+let helpTimers = [];
 let creditNumber = 0;
 
 /* ========================================================================
@@ -44,6 +52,7 @@ async function start() {
   hallOfFame = await (await fetch("data/hall_of_fame.json")).json();
   document.getElementById("credit-version").textContent = manifest.versionLine;
   buildThemeMenu();
+  startMameTicker();
   select("70s");
 }
 
@@ -55,6 +64,9 @@ function showStats(tab) {
   const leftValue = document.getElementById("stat-left-value");
   const rightLabel = document.getElementById("stat-right-label");
   const rightValue = document.getElementById("stat-right-value");
+
+  // Hides the little ghosts too whenever the stats are cleared.
+  hud.classList.toggle("hud--empty", !tab);
 
   if (!tab) {
     leftLabel.textContent = "";
@@ -208,6 +220,18 @@ function updateWarningColor(appBg) {
   document.documentElement.style.setProperty("--footer-warning-color", legible ? WARNING_RED : "#000000");
 }
 
+/* Redraw the ghost favicon in the given color (the same shape as the
+   CSS ghosts), so the tab icon always matches the current theme. */
+function updateFavicon(color) {
+  const svg =
+    `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 22 24">` +
+    `<path fill="${color}" d="M0 24V11a11 11 0 0 1 22 0v13z"/>` +
+    `<circle cx="6.5" cy="9.5" r="2.5" fill="#ffffff"/>` +
+    `<circle cx="15.5" cy="9.5" r="2.5" fill="#ffffff"/>` +
+    `</svg>`;
+  document.getElementById("favicon").href = "data:image/svg+xml," + encodeURIComponent(svg);
+}
+
 /* Paint the site's colors from a theme file. Each color in the file
    becomes a CSS variable, so "app-bg" becomes --app-bg in styles.css. */
 async function applyTheme(url) {
@@ -218,6 +242,7 @@ async function applyTheme(url) {
     }
     document.getElementById("theme-value").textContent = theme.name.toUpperCase();
     updateWarningColor(theme.colors["app-bg"] || "#000000");
+    updateFavicon(theme.colors["ui-muted"] || "#1ea0ff");
   } catch (error) {
     console.warn("Could not load theme:", url, error);
   }
@@ -242,6 +267,45 @@ function buildThemeMenu() {
 /* Open or close the theme menu. */
 function toggleThemeMenu() {
   themeMenu.hidden = !themeMenu.hidden;
+}
+
+/* The help panel: intro shows right away, then the 7 steps reveal one
+   at a time, same rhythm as the Hall of Fame rows. */
+function openHelp() {
+  helpOverlay.hidden = false;
+  helpToggle.classList.add("is-active");
+  helpTimers.forEach(clearTimeout);
+  helpTimers = [];
+  helpSteps.forEach(step => step.classList.remove("is-revealed"));
+  helpSteps.forEach((step, i) => {
+    helpTimers.push(setTimeout(() => step.classList.add("is-revealed"), 300 + i * 220));
+  });
+}
+
+function closeHelp() {
+  helpOverlay.hidden = true;
+  helpToggle.classList.remove("is-active");
+  helpTimers.forEach(clearTimeout);
+  helpTimers = [];
+}
+
+/* The MAME version in the bottom-left corner: typed out one character
+   at a time ("M", "MA", "MAM", ...), held for 10 seconds, then again.
+   The number comes from the same manifest line as the credits loop. */
+function startMameTicker() {
+  const match = manifest.versionLine.match(/MAME\s+[\d.]+/);
+  const text = match ? match[0] : "MAME";
+  let shown = 0;
+
+  (function type() {
+    shown++;
+    mameVersion.textContent = text.slice(0, shown);
+    if (shown < text.length) {
+      setTimeout(type, 180);
+    } else {
+      setTimeout(() => { shown = 0; type(); }, 10000);
+    }
+  })();
 }
 
 /* The credits loop: show each .credit item in turn, forever.
@@ -271,6 +335,17 @@ hofButtons.forEach(button => {
 
 hofToggle.onclick = toggleHallOfFame;
 themeToggle.onclick = toggleThemeMenu;
+
+helpToggle.onclick = () => (helpOverlay.hidden ? openHelp() : closeHelp());
+
+/* Clicking the dark area around the panel closes it. */
+helpOverlay.onclick = event => {
+  if (event.target === helpOverlay) closeHelp();
+};
+
+neonLogo.addEventListener("click", event => {
+  if (event.ctrlKey && event.shiftKey) flagCounter.hidden = !flagCounter.hidden;
+});
 
 /* Fullscreen the whole timeline area (not just the iframe), so the
    maximize button stays on top of it and can flip into an exit button. */
