@@ -1,5 +1,5 @@
 {
-  "versionLine": "Updated to MAME 0.288 (Parent machines only) and Gaming History 2.88b.",
+  "versionLine": "Updated to MAME 0.288 (Parent machines only) and Gaming History 2.88d.",
   "themes": {
     "Retro Arcade": "https://raw.githubusercontent.com/sreegjl/timelines-marketplace/main/themes/retroarcade/retroarcade.json",
     "Parchment v2": "https://raw.githubusercontent.com/sreegjl/timelines-marketplace/main/shipped_themes/parchment_v2/parchment_v2.json",
@@ -11,10 +11,10 @@
     "Console": "https://raw.githubusercontent.com/sreegjl/timelines-marketplace/main/themes/console/console.json"
   },
   "tabs": {
-    "70s":   { "games": 227,  "manufacturers": 60,  "theme": "https://raw.githubusercontent.com/sreegjl/timelines-marketplace/main/themes/mocha/mocha.json", "url": "https://www.timelines.studio/viewer/gh/sreegjl/timelines-website/main/public/arcade-timelines/timelines/1970s-arcade-no-clones.timeline" },
-    "80s":   { "games": 1772, "manufacturers": 409, "theme": "https://raw.githubusercontent.com/sreegjl/timelines-marketplace/main/themes/retroarcade/retroarcade.json", "url": "https://www.timelines.studio/viewer/gh/sreegjl/timelines-website/main/public/arcade-timelines/timelines/1980s-arcade-no-clones.timeline" },
+    "70s":   { "games": 227,  "manufacturers": 60,  "theme": "https://raw.githubusercontent.com/sreegjl/timelines-marketplace/main/themes/mocha/mocha.json", "url": "https://www.timelines.studio/viewer/gh/arcadetimelines/arcadetimelines.github.io/main/timelines/1970s-arcade-no-clones.timeline" },
+    "80s":   { "games": 1772, "manufacturers": 409, "theme": "https://raw.githubusercontent.com/sreegjl/timelines-marketplace/main/themes/retroarcade/retroarcade.json", "url": "https://github.com/arcadetimelines/arcadetimelines.github.io/blob/main/timelines/1980s-arcade-no-clones.timeline" },
     "90s":   { "games": 2071, "manufacturers": 486, "theme": "https://raw.githubusercontent.com/sreegjl/timelines-marketplace/main/themes/misc-neonfuture/misc-neonfuture.json", "url": "https://www.timelines.studio/viewer/gh/arcadetimelines/arcadetimelines.github.io/main/timelines/1990s-arcade-no-clones.timeline" },
-    "2000s": { "games": 804,  "manufacturers": 235, "theme": "https://raw.githubusercontent.com/sreegjl/timelines-marketplace/main/themes/dracula/dracula.json", "url": "https://www.timelines.studio/viewer/gh/sreegjl/timelines-website/main/public/arcade-timelines/timelines/2000s-arcade-no-clones.timeline" },
-    "Arcade Systems": { "games": 2068, "systems": 158, "theme": "https://raw.githubusercontent.com/sreegjl/timelines-marketplace/main/themes/console/console.json", "url": "https://www.timelines.studio/viewer/gh/sreegjl/timelines-website/main/public/arcade-timelines/timelines/arcade-systems.timeline" }
+    "2000s": { "games": 804,  "manufacturers": 235, "theme": "https://raw.githubusercontent.com/sreegjl/timelines-marketplace/main/themes/dracula/dracula.json", "url": "https://www.timelines.studio/viewer/gh/arcadetimelines/arcadetimelines.github.io/main/timelines/2000s-arcade-no-clones.timeline" },
+    "Arcade Systems": { "games": 2068, "systems": 158, "theme": "https://raw.githubusercontent.com/sreegjl/timelines-marketplace/main/themes/console/console.json", "url": "https://www.timelines.studio/viewer/gh/arcadetimelines/arcadetimelines.github.io/main/timelines/arcade-systems.timeline" }
   }
 }
