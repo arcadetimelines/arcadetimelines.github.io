@@ -580,6 +580,13 @@ body {
   right: 0;
   bottom: calc(100% + 10px);
   min-width: 220px;
+  /* Capped so a long theme list scrolls inside the menu instead of
+     growing up past the top of the page. */
+  max-height: 35vh;
+  overflow-y: auto;
+  overscroll-behavior: contain;
+  scrollbar-width: thin;
+  scrollbar-color: color-mix(in srgb, var(--ui-muted) 70%, transparent) transparent;
   display: flex;
   flex-direction: column;
   gap: 6px;
@@ -593,7 +600,34 @@ body {
   z-index: 5;
 }
 
+/* Chrome and Safari ignore scrollbar-color, so the same bar is drawn again
+   here. Styling it also stops macOS from hiding it until you scroll. */
+.theme-menu::-webkit-scrollbar {
+  width: 10px;
+}
+
+.theme-menu::-webkit-scrollbar-track {
+  background: color-mix(in srgb, var(--ui-muted) 12%, transparent);
+  border-radius: 5px;
+}
+
+.theme-menu::-webkit-scrollbar-thumb {
+  background: color-mix(in srgb, var(--ui-muted) 70%, transparent);
+  /* Transparent border plus content-box clipping insets the thumb, so it
+     reads as a bar sitting in the track rather than filling it. */
+  border: 2px solid transparent;
+  background-clip: content-box;
+  border-radius: 5px;
+}
+
+.theme-menu::-webkit-scrollbar-thumb:hover {
+  background: var(--ui-muted);
+  background-clip: content-box;
+}
+
 .theme-option {
+  /* Without this the buttons squash to fit the capped height. */
+  flex-shrink: 0;
   border: 2px solid var(--ui-muted);
   border-radius: 8px;
   background: transparent;
