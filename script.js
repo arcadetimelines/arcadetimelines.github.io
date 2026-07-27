@@ -343,8 +343,26 @@ helpOverlay.onclick = event => {
   if (event.target === helpOverlay) closeHelp();
 };
 
+let cKeyHeld = false;
+
+function isCKey(event) {
+  return event.code === "KeyC" || event.key.toLowerCase() === "c";
+}
+
+window.addEventListener("keydown", event => {
+  if (isCKey(event)) cKeyHeld = true;
+});
+
+window.addEventListener("keyup", event => {
+  if (isCKey(event)) cKeyHeld = false;
+});
+
+window.addEventListener("blur", () => { cKeyHeld = false; });
+
+neonLogo.addEventListener("mouseenter", () => neonLogo.focus({ preventScroll: true }));
+
 neonLogo.addEventListener("click", event => {
-  if (event.ctrlKey && event.shiftKey) flagCounter.hidden = !flagCounter.hidden;
+  if (event.shiftKey && cKeyHeld) flagCounter.hidden = !flagCounter.hidden;
 });
 
 /* Fullscreen the whole timeline area (not just the iframe), so the

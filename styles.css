@@ -117,6 +117,10 @@ body {
   line-height: 1;
 }
 
+.neon-logo:focus {
+  outline: none;
+}
+
 .neon-logo__arcade {
   font-size: 34px;
   color: var(--text-primary);
@@ -460,6 +464,20 @@ body {
   display: inline-flex;
   align-items: center;
   gap: 10px;
+}
+
+/* The MAME logo sitting in front of the typed-out version, sized to match
+   the height of the text next to it. */
+.mame-line {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+}
+
+.mame-line__logo {
+  display: block;
+  height: 13px;
+  width: auto;
 }
 
 /* The typed-out MAME version in the bottom-left corner. min-width keeps

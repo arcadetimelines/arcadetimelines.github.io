@@ -42,7 +42,7 @@
     </div>
 
     <header class="site-header">
-      <h1 class="neon-logo">
+      <h1 class="neon-logo" tabindex="-1">
         <span class="neon-logo__arcade">ARCADE</span>
         <span class="neon-logo__timelines">TIMELINES</span>
       </h1>
@@ -137,14 +137,18 @@
           <li class="help-step">4. Left panel -> Tags tabpage: make the desired tags visible (or keep them all visible).</li>
           <li class="help-step">5. Left panel -> Timeline tabpage: choose sorting and grouping options. Click any era (arcade era), span (arcade manufacturer) or event (arcade cabinet) to visualize it in the timeline or click it directly in the timeline itself.</li>
           <li class="help-step">6. Right panel: after executing 5., see arcade cabinet information and images, including clickable links.</li>
+          <li class="help-step">7. (optional: define advanced filters in the filter window).</li>
         </ol>
       </div>
     </div>
 
     <footer class="bottom-bar">
-      <!-- MAME version, typed out character by character by script.js.
-           The number comes from versionLine in data/manifest.json. -->
-      <div class="mame-version" id="mame-version" aria-hidden="true"></div>
+      <!-- MAME logo, then the version typed out character by character by
+           script.js. The number comes from versionLine in data/manifest.json. -->
+      <div class="mame-line">
+        <img class="mame-line__logo" src="images/mame_logo_small.svg" alt="" aria-hidden="true" />
+        <div class="mame-version" id="mame-version" aria-hidden="true"></div>
+      </div>
 
       <a class="flag-counter" id="flag-counter" hidden href="https://info.flagcounter.com/FtHc" target="_blank" rel="noopener">
         <img src="https://s05.flagcounter.com/count2/FtHc/bg_FFFFFF/txt_000000/border_CCCCCC/columns_4/maxflags_16/viewers_0/labels_1/pageviews_1/flags_0/percent_0/" alt="Flag Counter" />
@@ -180,7 +184,7 @@
     <p class="site-footer__credit">Game lists &copy; <a href="https://www.mamedev.org/" target="_blank" rel="noopener">MAME</a> - GPL-2.0 License</p>
     <p class="site-footer__credit">Game descriptions &copy; <a href="https://www.arcade-history.com/index.php?page=download" target="_blank" rel="noopener">Gaming History</a>, Alexis Bousiges, Cannes, France</p>
     <p class="site-footer__credit">Game images &copy; <a href="https://adb.arcadeitalia.net/" target="_blank" rel="noopener">Arcade Database</a>, Michele Fochi, Italy</p>
-    <p class="site-footer__credit">Software &copy; <a href="https://www.timelines.studio/" target="_blank" rel="noopener">Timelines</a>, Sree Gajula, California, USA - GPL-3.0 License</p>
+    <p class="site-footer__credit">Software &copy; <a href="https://timelines.studio/" target="_blank" rel="noopener">Timelines</a>, Sree Gajula, California, USA - GPL-3.0 License</p>
     <p class="site-footer__spacer" aria-hidden="true"></p>
     <p class="site-footer__copyright">&copy; 2026 Arcade Timelines</p>
   </footer>
