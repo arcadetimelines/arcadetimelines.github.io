@@ -1,7 +1,5 @@
 {
   "70s": {
-    "games": 227,
-    "manufacturers": 60,
     "top10": [
       { "game": "Asteroids (rev 4)",                       "manufacturer": "Atari",                            "year": 1979 },
       { "game": "Destroyer (Atari, version O2)",           "manufacturer": "Atari",                            "year": 1979 },
@@ -16,8 +14,6 @@
     ]
   },
   "80s": {
-    "games": 1772,
-    "manufacturers": 409,
     "top10": [
       { "game": "Golden Axe (set 6, US) (8751 317-123A)",              "manufacturer": "Sega",                                   "year": 1989 },
       { "game": "Wonder Boy (set 1, 315-5177)",                        "manufacturer": "Escape (Sega license)",                  "year": 1986 },
@@ -32,8 +28,6 @@
     ]
   },
   "90s": {
-    "games": 2071,
-    "manufacturers": 486,
     "top10": [
       { "game": "Terminator 2 - Judgment Day (rev LA4 08/03/92)", "manufacturer": "Midway",      "year": 1991 },
       { "game": "Revolution X (revision 2.0 9/8/94)",             "manufacturer": "Midway",      "year": 1994 },
@@ -48,8 +42,6 @@
     ]
   },
   "2000s": {
-    "games": 804,
-    "manufacturers": 235,
     "top10": [
       { "game": "OutRun 2 (Rev A) (GDX-0004A)",                          "manufacturer": "Sega",           "year": 2003 },
       { "game": "San Francisco Rush 2049: Special Edition",              "manufacturer": "Atari Games",    "year": 2003 },
