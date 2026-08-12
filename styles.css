@@ -745,6 +745,10 @@ body {
   transform: none;
 }
 
+.help-step a {
+  color: var(--link-color);
+}
+
 /* ---- ANIMATIONS -------------------------------------------------------- */
 @keyframes insert-coin-flash {
   0%   { opacity: 1; }
