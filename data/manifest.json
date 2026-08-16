@@ -13,13 +13,18 @@
 	"Midnight Ramen": "https://raw.githubusercontent.com/sreegjl/timelines-marketplace/refs/heads/main/themes/food-midnightramen/food-midnightramen.json",
 	"Golden Pineapple": "https://raw.githubusercontent.com/sreegjl/timelines-marketplace/refs/heads/main/themes/food-goldenpineapple/food-goldenpineapple.json",
 	"Tomato": "https://raw.githubusercontent.com/sreegjl/timelines-marketplace/refs/heads/main/themes/food-tomato/food-tomato.json",
-	"Reggae Vibes": "https://raw.githubusercontent.com/sreegjl/timelines-marketplace/refs/heads/main/themes/jamaica-reggaevibes/jamaica-reggaevibes.json"
+	"Reggae Vibes": "https://raw.githubusercontent.com/sreegjl/timelines-marketplace/refs/heads/main/themes/jamaica-reggaevibes/jamaica-reggaevibes.json",
+    "70s Groove": "https://raw.githubusercontent.com/sreegjl/timelines-marketplace/refs/heads/main/themes/arcadetimelines-70sgroove/arcadetimelines-70sgroove.json",
+    "80s Synthwave": "https://raw.githubusercontent.com/sreegjl/timelines-marketplace/refs/heads/main/themes/arcadetimelines-80ssynthwave/arcadetimelines-80ssynthwave.json",
+    "90s Memphis": "https://raw.githubusercontent.com/sreegjl/timelines-marketplace/refs/heads/main/themes/arcadetimelines-90smemphis/arcadetimelines-90smemphis.json",
+    "2000s Y2K": "https://raw.githubusercontent.com/sreegjl/timelines-marketplace/refs/heads/main/themes/arcadetimelines-2000sy2k/arcadetimelines-2000sy2k.json"
+    
   },
   "tabs": {
-    "70s":   { "games": 227,  "manufacturers": 60,  "theme": "https://raw.githubusercontent.com/sreegjl/timelines-marketplace/main/themes/mocha/mocha.json", "url": "https://www.timelines.studio/viewer/gh/arcadetimelines/arcadetimelines.github.io/main/timelines/1970s-arcade-no-clones.timeline" },
-    "80s":   { "games": 1773, "manufacturers": 405, "theme": "https://raw.githubusercontent.com/sreegjl/timelines-marketplace/main/themes/retroarcade/retroarcade.json", "url": "https://www.timelines.studio/viewer/gh/arcadetimelines/arcadetimelines.github.io/main/timelines/1980s-arcade-no-clones.timeline" },
+    "70s":   { "games": 227,  "manufacturers": 60,  "theme": "https://raw.githubusercontent.com/sreegjl/timelines-marketplace/refs/heads/main/themes/food-midnightramen/food-midnightramen.json", "url": "https://www.timelines.studio/viewer/gh/arcadetimelines/arcadetimelines.github.io/main/timelines/1970s-arcade-no-clones.timeline" },
+    "80s":   { "games": 1773, "manufacturers": 405, "theme": "https://raw.githubusercontent.com/sreegjl/timelines-marketplace/refs/heads/main/themes/arcadetimelines-80ssynthwave/arcadetimelines-80ssynthwave.json", "url": "https://www.timelines.studio/viewer/gh/arcadetimelines/arcadetimelines.github.io/main/timelines/1980s-arcade-no-clones.timeline" },
     "90s":   { "games": 2072, "manufacturers": 484, "theme": "https://raw.githubusercontent.com/sreegjl/timelines-marketplace/main/themes/misc-neonfuture/misc-neonfuture.json", "url": "https://www.timelines.studio/viewer/gh/arcadetimelines/arcadetimelines.github.io/main/timelines/1990s-arcade-no-clones.timeline" },
-    "2000s": { "games": 805,  "manufacturers": 235, "theme": "https://raw.githubusercontent.com/sreegjl/timelines-marketplace/refs/heads/main/themes/food-sugarplumdream/food-sugarplumdream.json", "url": "https://www.timelines.studio/viewer/gh/arcadetimelines/arcadetimelines.github.io/main/timelines/2000s-arcade-no-clones.timeline" },
+    "2000s": { "games": 805,  "manufacturers": 235, "theme": "https://raw.githubusercontent.com/sreegjl/timelines-marketplace/refs/heads/main/themes/nature-crocodilemarsh/nature-crocodilemarsh.json", "url": "https://www.timelines.studio/viewer/gh/arcadetimelines/arcadetimelines.github.io/main/timelines/2000s-arcade-no-clones.timeline" },
     "Arcade Systems": { "games": 2033, "systems": 158, "theme": "https://raw.githubusercontent.com/sreegjl/timelines-marketplace/main/themes/console/console.json", "url": "https://www.timelines.studio/viewer/gh/arcadetimelines/arcadetimelines.github.io/main/timelines/arcade-systems.timeline" }
   }
 }
