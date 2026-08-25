@@ -77,6 +77,7 @@
       <button class="tab tab--systems" data-tab="Arcade Systems">Arcade Systems</button>
       <button class="tab tab--hof" id="hof-toggle">Hall of Fame</button>
       <button class="tab tab--help" id="help-toggle" title="Help" aria-label="Help">?</button>
+      <button class="tab tab--links" id="links-toggle" title="Links" aria-label="Links">Links</button>
     </nav>
 
     <!-- The canvas area: the timeline viewer, or the Hall of Fame. -->
@@ -140,6 +141,24 @@
           <li class="help-step">7. (optional: define advanced filters in the filter window).</li>
           <li class="help-step">8. Show all arcade cabinets of a certain manufacturer span using span focus (<a href="https://www.timelines.studio/wiki/Searching" target="_blank" rel="noopener">link to wiki</a>).</li>
         </ol>
+      </div>
+    </div>
+
+    <!-- Links panel. Same window as the help panel; the entries reveal one
+         at a time, same animation as the help steps. -->
+    <div class="links-overlay" id="links-overlay" hidden>
+      <div class="help-panel">
+        <ul class="links-list">
+          <li class="links-group">
+            <span class="links-group__title">Book:</span>
+            <span class="links-item"><a href="https://www.theycreateworlds.com/book" target="_blank" rel="noopener">They Create Worlds</a></span>
+          </li>
+          <li class="links-group">
+            <span class="links-group__title">Blogs:</span>
+            <span class="links-item"><a href="https://allincolorforaquarter.blogspot.com/" target="_blank" rel="noopener">All In Color For a Quarter</a></span>
+            <span class="links-item"><a href="https://arcadeblogger.com/" target="_blank" rel="noopener">The Arcade Blogger</a></span>
+          </li>
+        </ul>
       </div>
     </div>
 

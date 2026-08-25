@@ -267,6 +267,26 @@ body {
   box-shadow: 0 0 16px color-mix(in srgb, var(--text-primary) 60%, transparent);
 }
 
+/* The "Links" button, to the right of the "?" button. Same colors and
+   the same panel; only the width differs, to fit the word. */
+.tab--links {
+  inline-size: auto;
+  min-inline-size: 78px;
+  padding-inline: 12px;
+  border-color: var(--text-primary);
+  color: var(--text-primary);
+  font-size: 9px;
+  text-transform: uppercase;
+  white-space: nowrap;
+}
+
+.tab--links.is-active {
+  background: var(--text-primary);
+  border-color: var(--text-primary);
+  color: var(--app-bg);
+  box-shadow: 0 0 16px color-mix(in srgb, var(--text-primary) 60%, transparent);
+}
+
 .tab:hover {
   background: color-mix(in srgb, var(--ui-muted) 14%, transparent);
 }
@@ -749,6 +769,58 @@ body {
   color: var(--link-color);
 }
 
+/* ---- LINKS PANEL -------------------------------------------------------
+   Same window as the help panel (it reuses .help-panel), with a
+   heading and its links per group. */
+.links-overlay {
+  position: fixed;
+  inset: 0;
+  z-index: 20;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 24px;
+  background: color-mix(in srgb, var(--app-bg) 78%, transparent);
+}
+
+.links-list {
+  list-style: none;
+  display: flex;
+  flex-direction: column;
+  gap: 26px;
+}
+
+.links-group {
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+}
+
+.links-group__title {
+  font-size: 11px;
+  line-height: 1.8;
+  color: var(--text-primary);
+}
+
+.links-item {
+  font-size: 10px;
+  line-height: 1.8;
+  padding-inline-start: 16px;
+  /* Same reveal as .help-step: script.js adds .is-revealed one at a time. */
+  opacity: 0;
+  transform: translateX(-12px);
+  transition: opacity 0.25s ease, transform 0.25s ease;
+}
+
+.links-item.is-revealed {
+  opacity: 1;
+  transform: none;
+}
+
+.links-item a {
+  color: var(--link-color);
+}
+
 /* ---- ANIMATIONS -------------------------------------------------------- */
 @keyframes insert-coin-flash {
   0%   { opacity: 1; }
@@ -787,6 +859,12 @@ body {
     inline-size: auto;
     min-inline-size: 126px;
     padding-inline: 10px;
+    font-size: 8px;
+  }
+
+  .tab--links {
+    min-inline-size: 68px;
+    padding-inline: 8px;
     font-size: 8px;
   }
 

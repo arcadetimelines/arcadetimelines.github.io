@@ -29,6 +29,9 @@ const hud = document.querySelector(".hud");
 const helpToggle = document.getElementById("help-toggle");
 const helpOverlay = document.getElementById("help-overlay");
 const helpSteps = document.querySelectorAll(".help-step");
+const linksToggle = document.getElementById("links-toggle");
+const linksOverlay = document.getElementById("links-overlay");
+const linksItems = document.querySelectorAll(".links-item");
 const flagCounter = document.getElementById("flag-counter");
 const neonLogo = document.querySelector(".neon-logo");
 const mameVersion = document.getElementById("mame-version");
@@ -40,6 +43,7 @@ let hofView = "70s";    // which list is selected inside the Hall of Fame
 let hofMode = false;    // is the Hall of Fame open?
 let revealTimers = [];
 let helpTimers = [];
+let linksTimers = [];
 let creditNumber = 0;
 
 /* ========================================================================
@@ -272,6 +276,7 @@ function toggleThemeMenu() {
 /* The help panel: intro shows right away, then the 7 steps reveal one
    at a time, same rhythm as the Hall of Fame rows. */
 function openHelp() {
+  closeLinks();
   helpOverlay.hidden = false;
   helpToggle.classList.add("is-active");
   helpTimers.forEach(clearTimeout);
@@ -287,6 +292,27 @@ function closeHelp() {
   helpToggle.classList.remove("is-active");
   helpTimers.forEach(clearTimeout);
   helpTimers = [];
+}
+
+/* The links panel: same window as the help panel, and the entries
+   reveal one at a time the same way. Only one panel is open at a time. */
+function openLinks() {
+  closeHelp();
+  linksOverlay.hidden = false;
+  linksToggle.classList.add("is-active");
+  linksTimers.forEach(clearTimeout);
+  linksTimers = [];
+  linksItems.forEach(item => item.classList.remove("is-revealed"));
+  linksItems.forEach((item, i) => {
+    linksTimers.push(setTimeout(() => item.classList.add("is-revealed"), 300 + i * 220));
+  });
+}
+
+function closeLinks() {
+  linksOverlay.hidden = true;
+  linksToggle.classList.remove("is-active");
+  linksTimers.forEach(clearTimeout);
+  linksTimers = [];
 }
 
 /* The MAME version in the bottom-left corner: typed out one character
@@ -341,6 +367,12 @@ helpToggle.onclick = () => (helpOverlay.hidden ? openHelp() : closeHelp());
 /* Clicking the dark area around the panel closes it. */
 helpOverlay.onclick = event => {
   if (event.target === helpOverlay) closeHelp();
+};
+
+linksToggle.onclick = () => (linksOverlay.hidden ? openLinks() : closeLinks());
+
+linksOverlay.onclick = event => {
+  if (event.target === linksOverlay) closeLinks();
 };
 
 let cKeyHeld = false;
