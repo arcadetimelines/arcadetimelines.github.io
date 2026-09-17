@@ -420,4 +420,6 @@ start().catch(() => alert(
   "Run 'python -m http.server' in this folder, then open http://localhost:8000"
 ));
 
+FR33PL4Y.onclick = () => ( window.open("https://fr33pl4y.github.io/") );
+
 nextCredit();
