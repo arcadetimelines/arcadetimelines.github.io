@@ -1,6 +1,6 @@
 {
-  "halloween": true,
-  "christmas": false,
+  "halloween": false,
+  "christmas": true,
   "versionLine": "Updated to MAME 0.289 (Parent machines only) and Gaming History 2.89.",
   "themes": {
     "Retro Arcade": "https://raw.githubusercontent.com/sreegjl/timelines-marketplace/main/themes/retroarcade/retroarcade.json",
