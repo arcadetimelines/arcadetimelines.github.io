@@ -3,6 +3,8 @@
   Arcade Timelines
   To change the numbers, versions, links, or themes: edit data/manifest.json.
   To change the Hall of Fame lists: edit data/hall_of_fame.json.
+  To turn the holiday decorations on or off: set "halloween" or
+  "christmas" to true or false in data/manifest.json.
 -->
 <html lang="en">
 <head>
@@ -22,6 +24,13 @@
 
 <body>
   <div class="arcade-frame">
+    <!-- Christmas: lights along the top and snow falling over the header.
+         script.js adds the snowflakes. Images are in decorations/. -->
+    <div class="decor decor--christmas decor-top" aria-hidden="true">
+      <div class="decor-lights"></div>
+      <div class="decor-snow" id="decor-snow"></div>
+    </div>
+
     <!-- The numbers in the top corners. Labels and values are both
          filled in by script.js from data/manifest.json (see showStats). -->
     <div class="hud">
@@ -46,6 +55,19 @@
         <span class="neon-logo__arcade">ARCADE</span>
         <span class="neon-logo__timelines">TIMELINES</span>
       </h1>
+
+      <!-- Holiday decorations on both sides of the logo. Only shown when
+           "halloween" or "christmas" is true in data/manifest.json. -->
+      <div class="decor decor--halloween" aria-hidden="true">
+        <img class="decor__side decor__side--left" src="decorations/pumpkin.svg" alt="" />
+        <img class="decor__side decor__side--right" src="decorations/pumpkin.svg" alt="" />
+        <img class="decor__bat decor__bat--left" src="decorations/bat.svg" alt="" />
+        <img class="decor__bat decor__bat--right" src="decorations/bat.svg" alt="" />
+      </div>
+      <div class="decor decor--christmas" aria-hidden="true">
+        <img class="decor__side decor__side--left" src="decorations/tree.svg" alt="" />
+        <img class="decor__side decor__side--right" src="decorations/tree.svg" alt="" />
+      </div>
     </header>
 
     <!-- Credits loop: items show one at a time, top to bottom, then repeat.

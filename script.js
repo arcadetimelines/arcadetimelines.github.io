@@ -55,9 +55,35 @@ async function start() {
   manifest = await (await fetch("data/manifest.json")).json();
   hallOfFame = await (await fetch("data/hall_of_fame.json")).json();
   document.getElementById("credit-version").textContent = manifest.versionLine;
+  showDecorations();
   buildThemeMenu();
   startMameTicker();
   select("70s");
+}
+
+/* Holiday decorations. Set "halloween" or "christmas" to true in
+   data/manifest.json to show them; styles.css only shows the
+   decorations whose class is on the <body>. */
+function showDecorations() {
+  document.body.classList.toggle("halloween", manifest.halloween === true);
+  document.body.classList.toggle("christmas", manifest.christmas === true);
+  if (manifest.christmas === true) makeSnow();
+}
+
+/* Drop snowflakes at random spots, sizes and speeds, so the snow
+   doesn't fall in a visible pattern. */
+function makeSnow() {
+  const snow = document.getElementById("decor-snow");
+  for (let i = 0; i < 18; i++) {
+    const flake = document.createElement("img");
+    flake.src = "decorations/snowflake.svg";
+    flake.alt = "";
+    flake.style.left = Math.random() * 100 + "%";
+    flake.style.width = 7 + Math.round(Math.random() * 3) * 2 + "px";
+    flake.style.animationDuration = 7 + Math.random() * 6 + "s";
+    flake.style.animationDelay = -Math.random() * 13 + "s";
+    snow.appendChild(flake);
+  }
 }
 
 /* Fill in the two corner numbers for a tab: Manufacturers/Games for a

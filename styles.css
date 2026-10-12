@@ -107,6 +107,9 @@ body {
 /* ---- NEON LOGO ---------------------------------------------------- */
 .site-header {
   text-align: center;
+  position: relative;
+  /* How far the holiday decorations sit from the middle of the logo. */
+  --decor-gap: 172px;
 }
 
 .neon-logo {
@@ -131,6 +134,79 @@ body {
   font-size: 34px;
   color: var(--ui-muted);
   text-shadow: 0 0 14px color-mix(in srgb, var(--ui-muted) 60%, transparent);
+}
+
+/* ---- HOLIDAY DECORATIONS ------------------------------------------
+   Hidden unless script.js puts "halloween" or "christmas" on the
+   <body> (set them in data/manifest.json). Images are in decorations/. */
+.decor {
+  display: none;
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+}
+
+body.halloween .decor--halloween,
+body.christmas .decor--christmas {
+  display: block;
+}
+
+.decor img {
+  position: absolute;
+  image-rendering: pixelated;
+  filter: drop-shadow(0 0 6px color-mix(in srgb, var(--ui-muted) 55%, transparent));
+}
+
+/* Pumpkins / trees, one on each side of the logo. */
+.decor__side {
+  bottom: 0;
+  width: 56px;
+}
+
+.decor__side--left  { right: calc(50% + var(--decor-gap)); }
+.decor__side--right { left: calc(50% + var(--decor-gap)); }
+
+/* Bats hovering above the pumpkins. */
+.decor__bat {
+  top: -28px;
+  width: 40px;
+  animation: bat-hover 2.4s ease-in-out infinite;
+}
+
+.decor__bat--left {
+  right: calc(50% + var(--decor-gap) + 28px);
+}
+
+.decor__bat--right {
+  left: calc(50% + var(--decor-gap) + 36px);
+  top: -16px;
+  animation-delay: -1.2s;
+}
+
+/* Christmas lights and snow, across the top of the neon frame. */
+.decor-top {
+  inset: 8px 8px auto;
+  height: 290px;
+  overflow: hidden;
+  border-radius: 14px 14px 0 0;
+  -webkit-mask-image: linear-gradient(#000 70%, transparent);
+  mask-image: linear-gradient(#000 70%, transparent);
+}
+
+.decor-lights {
+  position: absolute;
+  top: 2px;
+  left: 16px;
+  right: 16px;
+  height: 16px;
+  background: url("decorations/lights.svg") repeat-x;
+  background-size: 64px 16px;
+}
+
+.decor-snow img {
+  top: -16px;
+  opacity: 0.85;
+  animation: snow-fall 10s linear infinite;
 }
 
 /* ---- CREDITS LOOP -------------------------------------------------
@@ -829,6 +905,29 @@ body {
   100% { opacity: 1; }
 }
 
+@keyframes bat-hover {
+  0%, 100% { transform: translateY(0); }
+  50%      { transform: translateY(-8px); }
+}
+
+@keyframes snow-fall {
+  0%   { transform: translate(0, 0); }
+  50%  { transform: translate(12px, 160px); }
+  100% { transform: translate(0, 320px); }
+}
+
+/* People who turn off animations in their system settings get
+   still decorations, and no snow. */
+@media (prefers-reduced-motion: reduce) {
+  .decor__bat {
+    animation: none;
+  }
+
+  .decor-snow {
+    display: none;
+  }
+}
+
 /* ---- SMALL SCREENS ------------------------------------------------------ */
 @media (max-width: 640px) {
   body {
@@ -844,6 +943,21 @@ body {
   .neon-logo__timelines {
     font-size: 22px;
   }
+
+  .site-header {
+    --decor-gap: 106px;
+  }
+
+  .decor__side {
+    width: 32px;
+  }
+
+  .decor__bat {
+    width: 28px;
+  }
+
+  .decor__bat--left  { right: calc(50% + var(--decor-gap) + 8px); }
+  .decor__bat--right { left: calc(50% + var(--decor-gap) + 12px); }
 
   .tab {
     font-size: 9px;
