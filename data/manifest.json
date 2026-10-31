@@ -1,5 +1,5 @@
 {
-  "halloween": true,
+  "halloween": false,
   "christmas": false,
   "versionLine": "Updated to MAME 0.289 (Parent machines only) and Gaming History 2.89.",
   "themes": {
@@ -30,4 +30,3 @@
     "Arcade Systems": { "games": 2152, "systems": 171, "theme": "https://raw.githubusercontent.com/sreegjl/timelines-marketplace/main/themes/console/console.json", "url": "https://www.timelines.studio/viewer/gh/arcadetimelines/arcadetimelines.github.io/main/timelines/arcade-systems.timeline" }
   }
 }
-
