@@ -3,8 +3,8 @@
   "decorationsByDate": true,
   "halloween": false,
   "christmas": false,
-  "snow": true,
-  "newYear": false,
+  "snow": false,
+  "newYear": true,
   "easter": false,
   "valentine": false,
   "mameFrontend": {
