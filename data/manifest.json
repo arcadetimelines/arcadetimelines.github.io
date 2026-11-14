@@ -5,8 +5,8 @@
   "christmas": false,
   "snow": false,
   "newYear": false,
-  "easter": true,
-  "valentine": false,
+  "easter": false,
+  "valentine": true,
   "mameFrontend": {
     "_help": "downloadUrl: paste the download address between the quotes. screenshot: an image file in the images folder (the window resizes itself to fit it). Leave screenshot empty (\"\") to show no picture.",
     "text": "Browse and play the arcade games from these timelines with a MAME frontend.",
