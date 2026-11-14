@@ -4,8 +4,8 @@
   "halloween": false,
   "christmas": false,
   "snow": false,
-  "newYear": true,
-  "easter": false,
+  "newYear": false,
+  "easter": true,
   "valentine": false,
   "mameFrontend": {
     "_help": "downloadUrl: paste the download address between the quotes. screenshot: an image file in the images folder (the window resizes itself to fit it). Leave screenshot empty (\"\") to show no picture.",
