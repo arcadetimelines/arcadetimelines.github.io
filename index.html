@@ -3,8 +3,13 @@
   Arcade Timelines
   To change the numbers, versions, links, or themes: edit data/manifest.json.
   To change the Hall of Fame lists: edit data/hall_of_fame.json.
-  To turn the holiday decorations on or off: set "halloween" or
-  "christmas" to true or false in data/manifest.json.
+  Holiday decorations (Halloween, Christmas, Snow, New Year, Easter,
+  Valentine's Day) switch on BY THEMSELVES when today's date is inside
+  their date range. The date ranges are at the top of script.js
+  (look for DECORATION_DATES). To force one on (for testing), set it
+  to true in data/manifest.json.
+  To change the MAME frontend window (download link, screenshot):
+  edit "mameFrontend" in data/manifest.json.
 -->
 <html lang="en">
 <head>
@@ -24,11 +29,26 @@
 
 <body>
   <div class="arcade-frame">
-    <!-- Christmas: lights along the top and snow falling over the header.
-         script.js adds the snowflakes. Images are in decorations/. -->
+    <!-- Effects across the top of the neon frame. Each layer only shows
+         when its holiday is on (see showDecorations in script.js).
+         script.js adds the snowflakes, fireworks and hearts.
+         Images are in decorations/. -->
+
+    <!-- Christmas: lights along the top. -->
     <div class="decor decor--christmas decor-top" aria-hidden="true">
       <div class="decor-lights"></div>
+    </div>
+    <!-- Snow: shown for Christmas, and also on its own ("snow"). -->
+    <div class="decor decor--snow decor-top" aria-hidden="true">
       <div class="decor-snow" id="decor-snow"></div>
+    </div>
+    <!-- New Year's Eve: fireworks popping on both sides of the logo. -->
+    <div class="decor decor--newyear decor-top" aria-hidden="true">
+      <div class="decor-fireworks" id="decor-fireworks"></div>
+    </div>
+    <!-- Valentine's Day: little hearts floating up. -->
+    <div class="decor decor--valentine decor-top" aria-hidden="true">
+      <div class="decor-hearts" id="decor-hearts"></div>
     </div>
 
     <!-- The numbers in the top corners. Labels and values are both
@@ -56,8 +76,8 @@
         <span class="neon-logo__timelines">TIMELINES</span>
       </h1>
 
-      <!-- Holiday decorations on both sides of the logo. Only shown when
-           "halloween" or "christmas" is true in data/manifest.json. -->
+      <!-- Holiday decorations on both sides of the logo. Only shown while
+           that holiday is on (by date, or forced on in data/manifest.json). -->
       <div class="decor decor--halloween" aria-hidden="true">
         <img class="decor__side decor__side--left" src="decorations/pumpkin.svg" alt="" />
         <img class="decor__side decor__side--right" src="decorations/pumpkin.svg" alt="" />
@@ -67,6 +87,24 @@
       <div class="decor decor--christmas" aria-hidden="true">
         <img class="decor__side decor__side--left" src="decorations/tree.svg" alt="" />
         <img class="decor__side decor__side--right" src="decorations/tree.svg" alt="" />
+      </div>
+      <!-- New Year: a glass of bubbly on each side. When Christmas is on
+           too, the glasses move out next to the trees (see styles.css). -->
+      <div class="decor decor--newyear" aria-hidden="true">
+        <img class="decor__glass decor__glass--left" src="decorations/glass.svg" alt="" />
+        <img class="decor__glass decor__glass--right" src="decorations/glass.svg" alt="" />
+      </div>
+      <!-- Easter: a hopping bunny on each side, with an egg next to it. -->
+      <div class="decor decor--easter" aria-hidden="true">
+        <img class="decor__side decor__bunny decor__side--left" src="decorations/bunny.svg" alt="" />
+        <img class="decor__side decor__bunny decor__side--right" src="decorations/bunny.svg" alt="" />
+        <img class="decor__egg decor__egg--left" src="decorations/egg1.svg" alt="" />
+        <img class="decor__egg decor__egg--right" src="decorations/egg2.svg" alt="" />
+      </div>
+      <!-- Valentine's Day: a beating heart on each side. -->
+      <div class="decor decor--valentine" aria-hidden="true">
+        <img class="decor__side decor__heart decor__side--left" src="decorations/heart.svg" alt="" />
+        <img class="decor__side decor__heart decor__side--right" src="decorations/heart.svg" alt="" />
       </div>
     </header>
 
@@ -103,6 +141,7 @@
       <button class="tab tab--hof" id="hof-toggle">Hall of Fame</button>
       <button class="tab tab--help" id="help-toggle" title="Help" aria-label="Help">?</button>
       <button class="tab tab--links" id="links-toggle" title="Links" aria-label="Links">Links</button>
+      <button class="tab tab--links" id="frontend-toggle" title="MAME frontend" aria-label="MAME frontend">MAME frontend</button>
     </nav>
 
     <!-- The canvas area: the timeline viewer, or the Hall of Fame. -->
@@ -216,6 +255,20 @@
             <span class="links-item"><a href="https://love2d.org/" target="_blank" rel="noopener">LÖVE</a></span>
           </li>
         </ul>
+      </div>
+    </div>
+
+    <!-- MAME frontend panel. Same window as the Links panel, but it grows
+         or shrinks to fit the screenshot inside it (see .frontend-panel in
+         styles.css). The text, download link and screenshot are all filled
+         in by script.js from "mameFrontend" in data/manifest.json. -->
+    <div class="links-overlay" id="frontend-overlay" hidden>
+      <div class="help-panel frontend-panel">
+        <p class="frontend-text frontend-reveal" id="frontend-text"></p>
+        <p class="frontend-download frontend-reveal">
+          <a id="frontend-link" href="#" target="_blank" rel="noopener"></a>
+        </p>
+        <img class="frontend-screenshot frontend-reveal" id="frontend-screenshot" alt="Screenshot of the MAME frontend" hidden />
       </div>
     </div>
 

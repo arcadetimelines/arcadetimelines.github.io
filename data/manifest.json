@@ -1,6 +1,19 @@
 {
+  "_decorationsHelp": "Decorations switch on by themselves during their dates (the dates are in script.js, DECORATION_DATES). Set one to true to force it on any day, e.g. for testing. Set decorationsByDate to false to turn off the automatic dates (then only the ones set to true show).",
+  "decorationsByDate": true,
   "halloween": false,
-  "christmas": false,
+  "christmas": true,
+  "snow": false,
+  "newYear": false,
+  "easter": false,
+  "valentine": false,
+  "mameFrontend": {
+    "_help": "downloadUrl: paste the download address between the quotes. screenshot: an image file in the images folder (the window resizes itself to fit it). Leave screenshot empty (\"\") to show no picture.",
+    "text": "Browse and play the arcade games from these timelines with a MAME frontend.",
+    "downloadText": "Download the MAME frontend",
+    "downloadUrl": "",
+    "screenshot": "images/mame_frontend_screenshot.png"
+  },
   "versionLine": "Updated to MAME 0.289 (Parent machines only) and Gaming History 2.89.",
   "themes": {
     "Retro Arcade": "https://raw.githubusercontent.com/sreegjl/timelines-marketplace/main/themes/retroarcade/retroarcade.json",

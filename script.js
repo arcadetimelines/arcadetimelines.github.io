@@ -1,7 +1,11 @@
 /* script.js — makes the whole site work.
    It reads data/manifest.json and data/hall_of_fame.json, then handles the tabs,
-   the corner numbers, the credits loop, the theme menu, and swaps the
-   canvas area between the timeline viewer and the Hall of Fame.
+   the corner numbers, the credits loop, the theme menu, the holiday
+   decorations, and swaps the canvas area between the timeline viewer
+   and the Hall of Fame.
+
+   Want to change WHEN a holiday decoration shows up? See
+   DECORATION_DATES just below.
 
    The file has two parts:
    1. FUNCTIONS — everything the site knows how to do. Nothing in this
@@ -32,6 +36,9 @@ const helpSteps = document.querySelectorAll(".help-step");
 const linksToggle = document.getElementById("links-toggle");
 const linksOverlay = document.getElementById("links-overlay");
 const linksItems = document.querySelectorAll(".links-item");
+const frontendToggle = document.getElementById("frontend-toggle");
+const frontendOverlay = document.getElementById("frontend-overlay");
+const frontendItems = document.querySelectorAll(".frontend-reveal");
 const flagCounter = document.getElementById("flag-counter");
 const neonLogo = document.querySelector(".neon-logo");
 const mameVersion = document.getElementById("mame-version");
@@ -44,7 +51,31 @@ let hofMode = false;    // is the Hall of Fame open?
 let revealTimers = [];
 let helpTimers = [];
 let linksTimers = [];
+let frontendTimers = [];
 let creditNumber = 0;
+
+/* ---- HOLIDAY DATES (safe to edit) --------------------------------------
+   Each decoration switches itself on between these two dates, every year,
+   and off again afterwards. Nothing else needs changing.
+
+   - Dates are written "month-day": "12-01" means December 1st.
+     Always use two digits ("02-07", not "2-7"). Both days count.
+   - A range may run over New Year: "12-29" to "01-02" works fine.
+   - Easter moves every year, so it is set as a number of days before and
+     after Easter Sunday instead. The site works out Easter Sunday itself.
+   - Two decorations may overlap (e.g. Christmas and New Year at the end
+     of December): both show at the same time.
+
+   To force a decoration on any day (for testing), set it to true in
+   data/manifest.json. That always wins over these dates. */
+const DECORATION_DATES = {
+  halloween: { from: "10-20", to: "11-01" },  // Oct 20 – Nov 1
+  christmas: { from: "12-01", to: "12-31" },  // Dec 1 – Dec 31 (includes snow)
+  newYear:   { from: "12-29", to: "01-02" },  // Dec 29 – Jan 2 (fireworks + glasses)
+  snow:      { from: "01-03", to: "01-31" },  // Jan 3 – Jan 31 (just the snow)
+  valentine: { from: "02-07", to: "02-15" },  // Feb 7 – Feb 15
+  easter:    { daysBefore: 7, daysAfter: 1 }  // a week before Easter Sunday – Easter Monday
+};
 
 /* ========================================================================
    1. FUNCTIONS
@@ -56,18 +87,88 @@ async function start() {
   hallOfFame = await (await fetch("data/hall_of_fame.json")).json();
   document.getElementById("credit-version").textContent = manifest.versionLine;
   showDecorations();
+  fillFrontend();
   buildThemeMenu();
   startMameTicker();
   select("70s");
 }
 
-/* Holiday decorations. Set "halloween" or "christmas" to true in
-   data/manifest.json to show them; styles.css only shows the
-   decorations whose class is on the <body>. */
+/* Holiday decorations. Each one is on when today is inside its dates in
+   DECORATION_DATES (above), or when it is set to true in
+   data/manifest.json. The decoration's name is put on the <body> as a
+   class (e.g. <body class="christmas newYear">), and styles.css only
+   shows the decorations whose class is on the <body>. */
+const DECORATIONS = ["halloween", "christmas", "snow", "newYear", "easter", "valentine"];
+
 function showDecorations() {
-  document.body.classList.toggle("halloween", manifest.halloween === true);
-  document.body.classList.toggle("christmas", manifest.christmas === true);
-  if (manifest.christmas === true) makeSnow();
+  for (const name of DECORATIONS) {
+    document.body.classList.toggle(name, isDecorationOn(name));
+  }
+
+  const isOn = name => document.body.classList.contains(name);
+  // Christmas always has snow; "snow" on its own gives just the snow.
+  if (isOn("christmas") || isOn("snow")) makeSnow();
+  if (isOn("newYear")) makeFireworks();
+  if (isOn("valentine")) makeHearts();
+}
+
+/* Should this decoration show today?
+   1. true in data/manifest.json  -> yes, whatever the date.
+   2. "decorationsByDate": false  -> no (only forced ones show).
+   3. otherwise                   -> yes if today is inside its dates. */
+function isDecorationOn(name) {
+  if (manifest[name] === true) return true;
+  if (manifest.decorationsByDate === false) return false;
+  return isInDateRange(DECORATION_DATES[name], new Date());
+}
+
+/* Is the given day inside a range from DECORATION_DATES? */
+function isInDateRange(range, today) {
+  if (!range) return false;
+
+  // Easter: count days around this year's Easter Sunday.
+  if (range.daysBefore !== undefined) {
+    const day = new Date(today.getFullYear(), today.getMonth(), today.getDate());
+    const easter = easterSunday(today.getFullYear());
+    const from = new Date(easter);
+    from.setDate(easter.getDate() - range.daysBefore);
+    const to = new Date(easter);
+    to.setDate(easter.getDate() + range.daysAfter);
+    return day >= from && day <= to;
+  }
+
+  // Everything else: compare "month-day" text, e.g. "11-13".
+  // Because both are always two digits, "01-31" < "02-07" < "12-01".
+  const month = String(today.getMonth() + 1).padStart(2, "0");
+  const date = String(today.getDate()).padStart(2, "0");
+  const now = month + "-" + date;
+
+  if (range.from <= range.to) {
+    return now >= range.from && now <= range.to;
+  }
+  // The range runs over New Year (e.g. "12-29" to "01-02").
+  return now >= range.from || now <= range.to;
+}
+
+/* The date of Easter Sunday in a given year. This is the standard
+   church calendar formula (the "Anonymous Gregorian algorithm") —
+   safe to skip over, it just works. */
+function easterSunday(year) {
+  const a = year % 19;
+  const b = Math.floor(year / 100);
+  const c = year % 100;
+  const d = Math.floor(b / 4);
+  const e = b % 4;
+  const f = Math.floor((b + 8) / 25);
+  const g = Math.floor((b - f + 1) / 3);
+  const h = (19 * a + b - d - g + 15) % 30;
+  const i = Math.floor(c / 4);
+  const k = c % 4;
+  const l = (32 + 2 * e + 2 * i - h - k) % 7;
+  const m = Math.floor((a + 11 * h + 22 * l) / 451);
+  const month = Math.floor((h + l - 7 * m + 114) / 31);   // 3 = March, 4 = April
+  const day = ((h + l - 7 * m + 114) % 31) + 1;
+  return new Date(year, month - 1, day);
 }
 
 /* Drop snowflakes at random spots, sizes and speeds, so the snow
@@ -83,6 +184,50 @@ function makeSnow() {
     flake.style.animationDuration = 7 + Math.random() * 6 + "s";
     flake.style.animationDelay = -Math.random() * 13 + "s";
     snow.appendChild(flake);
+  }
+}
+
+/* New Year's Eve fireworks: a few bursts that pop, fade, and then pop
+   again somewhere else, in a random color. Like the snow, each one gets
+   its own random speed so they never go off in step. */
+function makeFireworks() {
+  const sky = document.getElementById("decor-fireworks");
+  for (let i = 0; i < 6; i++) {
+    const firework = document.createElement("img");
+    firework.alt = "";
+    firework.style.animationDuration = 2.4 + Math.random() * 1.6 + "s";
+    firework.style.animationDelay = -Math.random() * 4 + "s";
+    placeFirework(firework);
+    // Every time a burst has faded out, move it to a new spot.
+    firework.addEventListener("animationiteration", () => placeFirework(firework));
+    sky.appendChild(firework);
+  }
+}
+
+/* Pick a color, a size and a spot for one firework. They stay out to
+   the left and right so the logo in the middle stays readable. */
+function placeFirework(firework) {
+  const color = 1 + Math.floor(Math.random() * 4);          // firework1.svg ... firework4.svg
+  firework.src = "decorations/firework" + color + ".svg";
+  const onLeft = Math.random() < 0.5;
+  firework.style.left = (onLeft ? 1 + Math.random() * 24 : 70 + Math.random() * 24) + "%";
+  firework.style.top = 60 + Math.random() * 100 + "px";   // below the corner numbers
+  firework.style.width = (2 + Math.floor(Math.random() * 3)) * 17 + "px";  // 34, 51 or 68px
+}
+
+/* Valentine's Day: little hearts floating up, at random spots, sizes
+   and speeds (the snow in reverse). */
+function makeHearts() {
+  const hearts = document.getElementById("decor-hearts");
+  for (let i = 0; i < 14; i++) {
+    const heart = document.createElement("img");
+    heart.src = "decorations/heart_small.svg";
+    heart.alt = "";
+    heart.style.left = Math.random() * 100 + "%";
+    heart.style.width = 14 + Math.round(Math.random() * 2) * 7 + "px";  // 14, 21 or 28px
+    heart.style.animationDuration = 8 + Math.random() * 6 + "s";
+    heart.style.animationDelay = -Math.random() * 14 + "s";
+    hearts.appendChild(heart);
   }
 }
 
@@ -303,6 +448,7 @@ function toggleThemeMenu() {
    at a time, same rhythm as the Hall of Fame rows. */
 function openHelp() {
   closeLinks();
+  closeFrontend();
   helpOverlay.hidden = false;
   helpToggle.classList.add("is-active");
   helpTimers.forEach(clearTimeout);
@@ -324,6 +470,7 @@ function closeHelp() {
    reveal one at a time the same way. Only one panel is open at a time. */
 function openLinks() {
   closeHelp();
+  closeFrontend();
   linksOverlay.hidden = false;
   linksToggle.classList.add("is-active");
   linksTimers.forEach(clearTimeout);
@@ -339,6 +486,56 @@ function closeLinks() {
   linksToggle.classList.remove("is-active");
   linksTimers.forEach(clearTimeout);
   linksTimers = [];
+}
+
+/* The MAME frontend panel: fill in its text, download link and
+   screenshot from "mameFrontend" in data/manifest.json. */
+function fillFrontend() {
+  const info = manifest.mameFrontend || {};
+  const link = document.getElementById("frontend-link");
+  const screenshot = document.getElementById("frontend-screenshot");
+
+  document.getElementById("frontend-text").textContent = info.text || "";
+
+  if (info.downloadUrl) {
+    link.href = info.downloadUrl;
+    link.textContent = info.downloadText || "Download";
+  } else {
+    // No address filled in yet: show plain text instead of a dead link.
+    link.removeAttribute("href");
+    link.textContent = "Download link coming soon";
+  }
+
+  // The screenshot only appears once it has loaded, so a missing or
+  // misspelled file just leaves it out instead of showing a broken image.
+  // The window sizes itself around the picture (see styles.css).
+  if (info.screenshot) {
+    screenshot.onload = () => { screenshot.hidden = false; };
+    screenshot.onerror = () => { screenshot.hidden = true; };
+    screenshot.src = info.screenshot;
+  }
+}
+
+/* Same window and the same one-at-a-time reveal as the links panel.
+   Only one panel is open at a time. */
+function openFrontend() {
+  closeHelp();
+  closeLinks();
+  frontendOverlay.hidden = false;
+  frontendToggle.classList.add("is-active");
+  frontendTimers.forEach(clearTimeout);
+  frontendTimers = [];
+  frontendItems.forEach(item => item.classList.remove("is-revealed"));
+  frontendItems.forEach((item, i) => {
+    frontendTimers.push(setTimeout(() => item.classList.add("is-revealed"), 300 + i * 220));
+  });
+}
+
+function closeFrontend() {
+  frontendOverlay.hidden = true;
+  frontendToggle.classList.remove("is-active");
+  frontendTimers.forEach(clearTimeout);
+  frontendTimers = [];
 }
 
 /* The MAME version in the bottom-left corner: typed out one character
@@ -399,6 +596,12 @@ linksToggle.onclick = () => (linksOverlay.hidden ? openLinks() : closeLinks());
 
 linksOverlay.onclick = event => {
   if (event.target === linksOverlay) closeLinks();
+};
+
+frontendToggle.onclick = () => (frontendOverlay.hidden ? openFrontend() : closeFrontend());
+
+frontendOverlay.onclick = event => {
+  if (event.target === frontendOverlay) closeFrontend();
 };
 
 let cKeyHeld = false;

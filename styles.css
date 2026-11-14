@@ -137,8 +137,10 @@ body {
 }
 
 /* ---- HOLIDAY DECORATIONS ------------------------------------------
-   Hidden unless script.js puts "halloween" or "christmas" on the
-   <body> (set them in data/manifest.json). Images are in decorations/. */
+   Hidden unless script.js puts the holiday's name on the <body>
+   (halloween, christmas, snow, newYear, easter or valentine). That
+   happens by date, or when it's forced on in data/manifest.json.
+   Images are in decorations/. */
 .decor {
   display: none;
   position: absolute;
@@ -147,7 +149,12 @@ body {
 }
 
 body.halloween .decor--halloween,
-body.christmas .decor--christmas {
+body.christmas .decor--christmas,
+body.christmas .decor--snow,
+body.snow .decor--snow,
+body.newYear .decor--newyear,
+body.easter .decor--easter,
+body.valentine .decor--valentine {
   display: block;
 }
 
@@ -183,7 +190,50 @@ body.christmas .decor--christmas {
   animation-delay: -1.2s;
 }
 
-/* Christmas lights and snow, across the top of the neon frame. */
+/* New Year: a glass on each side of the logo. The right one is
+   flipped so the two face each other. */
+.decor__glass {
+  bottom: 0;
+  width: 36px;
+}
+
+.decor__glass--left  { right: calc(50% + var(--decor-gap)); }
+.decor__glass--right { left: calc(50% + var(--decor-gap)); transform: scaleX(-1); }
+
+/* New Year + Christmas together: the trees keep their spot and the
+   glasses move out next to them. */
+body.christmas .decor__glass--left  { right: calc(50% + var(--decor-gap) + 68px); }
+body.christmas .decor__glass--right { left: calc(50% + var(--decor-gap) + 68px); }
+
+/* Easter: the bunnies use the side spots and hop now and then; an egg
+   sits just outside each bunny. */
+.decor__bunny {
+  width: 48px;
+  animation: bunny-hop 2.2s ease-in-out infinite;
+}
+
+.decor__bunny.decor__side--right {
+  animation-delay: -1.1s;
+}
+
+.decor__egg {
+  bottom: 0;
+  width: 24px;
+  animation: egg-wobble 1.8s steps(2, end) infinite;
+}
+
+.decor__egg--left  { right: calc(50% + var(--decor-gap) + 54px); }
+.decor__egg--right { left: calc(50% + var(--decor-gap) + 54px); animation-delay: -0.9s; }
+
+/* Valentine's Day: the hearts use the side spots. They beat by
+   themselves (the animation is inside heart.svg). */
+.decor__heart {
+  bottom: 8px;
+  width: 44px;
+}
+
+/* Christmas lights, snow, fireworks and floating hearts, across the
+   top of the neon frame. */
 .decor-top {
   inset: 8px 8px auto;
   height: 290px;
@@ -207,6 +257,21 @@ body.christmas .decor--christmas {
   top: -16px;
   opacity: 0.85;
   animation: snow-fall 10s linear infinite;
+}
+
+/* Each firework pops, grows, fades, and waits a moment before going
+   off again. script.js moves it to a new spot each time. steps()
+   makes it grow in chunky jumps, like an arcade explosion. */
+.decor-fireworks img {
+  opacity: 0;
+  animation: firework-pop 3s steps(2, end) infinite;
+}
+
+/* Hearts start just below the top area and float up out of it. */
+.decor-hearts img {
+  top: 100%;
+  opacity: 0.9;
+  animation: heart-rise 10s linear infinite;
 }
 
 /* ---- CREDITS LOOP -------------------------------------------------
@@ -898,6 +963,66 @@ body.christmas .decor--christmas {
   color: var(--link-color);
 }
 
+/* ---- MAME FRONTEND PANEL -----------------------------------------------
+   Same window as the Links panel (it reuses .links-overlay and
+   .help-panel), but instead of a fixed width it shrinks or grows to fit
+   the screenshot. A big screenshot is scaled down to fit the screen. */
+.frontend-panel {
+  /* As wide as the screenshot... */
+  width: fit-content;
+  /* ...but never narrower than this (e.g. when there's no screenshot)... */
+  min-width: min(360px, 100%);
+  /* ...and never wider or taller than the screen. */
+  max-width: calc(100vw - 48px);
+  max-height: 90vh;
+  display: flex;
+  flex-direction: column;
+  gap: 18px;
+}
+
+/* The text wraps to the screenshot's width instead of making the
+   window wider. (width: 0 + min-width: 100% = "take the width the
+   window already has, but don't push it any wider".) */
+.frontend-text,
+.frontend-download {
+  width: 0;
+  min-width: 100%;
+  font-size: 10px;
+  line-height: 1.8;
+}
+
+.frontend-text {
+  color: var(--text-primary);
+}
+
+.frontend-download a {
+  color: var(--link-color);
+}
+
+.frontend-screenshot {
+  display: block;
+  align-self: center;
+  flex-shrink: 0;
+  /* The biggest the screenshot may get. Smaller images show at their
+     own size, and the window wraps snugly around them. */
+  max-width: 100%;
+  max-height: 65vh;
+  border: 2px solid var(--border-color);
+  border-radius: 6px;
+}
+
+/* Same reveal as .links-item: script.js adds .is-revealed one at a time. */
+.frontend-reveal {
+  opacity: 0;
+  transform: translateX(-12px);
+  transition: opacity 0.25s ease, transform 0.25s ease;
+}
+
+.frontend-reveal.is-revealed {
+  opacity: 1;
+  transform: none;
+}
+
 /* ---- ANIMATIONS -------------------------------------------------------- */
 @keyframes insert-coin-flash {
   0%   { opacity: 1; }
@@ -916,14 +1041,45 @@ body.christmas .decor--christmas {
   100% { transform: translate(0, 320px); }
 }
 
+@keyframes firework-pop {
+  0%   { opacity: 0; transform: scale(0.25); }
+  8%   { opacity: 1; transform: scale(0.5); }
+  20%  { opacity: 1; transform: scale(1); }
+  45%  { opacity: 0.8; transform: scale(1.1); }
+  60%  { opacity: 0; transform: scale(1.15); }
+  100% { opacity: 0; transform: scale(1.15); }
+}
+
+@keyframes heart-rise {
+  0%   { transform: translate(0, 0); }
+  50%  { transform: translate(-12px, -160px); }
+  100% { transform: translate(0, -330px); }
+}
+
+@keyframes bunny-hop {
+  0%, 60%, 100% { transform: translateY(0); }
+  70%           { transform: translateY(-12px); }
+  80%           { transform: translateY(0); }
+  88%           { transform: translateY(-6px); }
+}
+
+@keyframes egg-wobble {
+  0%, 100% { transform: rotate(-6deg); }
+  50%      { transform: rotate(6deg); }
+}
+
 /* People who turn off animations in their system settings get
-   still decorations, and no snow. */
+   still decorations, and no snow, fireworks or floating hearts. */
 @media (prefers-reduced-motion: reduce) {
-  .decor__bat {
+  .decor__bat,
+  .decor__bunny,
+  .decor__egg {
     animation: none;
   }
 
-  .decor-snow {
+  .decor-snow,
+  .decor-fireworks,
+  .decor-hearts {
     display: none;
   }
 }
@@ -958,6 +1114,17 @@ body.christmas .decor--christmas {
 
   .decor__bat--left  { right: calc(50% + var(--decor-gap) + 8px); }
   .decor__bat--right { left: calc(50% + var(--decor-gap) + 12px); }
+
+  .decor__glass  { width: 22px; }
+  .decor__bunny  { width: 30px; }
+  .decor__heart  { width: 28px; bottom: 4px; }
+  .decor__egg    { width: 16px; }
+
+  body.christmas .decor__glass--left  { right: calc(50% + var(--decor-gap) + 38px); }
+  body.christmas .decor__glass--right { left: calc(50% + var(--decor-gap) + 38px); }
+
+  .decor__egg--left  { right: calc(50% + var(--decor-gap) + 34px); }
+  .decor__egg--right { left: calc(50% + var(--decor-gap) + 34px); }
 
   .tab {
     font-size: 9px;
